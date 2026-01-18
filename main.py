@@ -73,10 +73,16 @@ text_chunker: TextChunker = None
 @app.on_event("startup")
 async def startup_event():
     """Initialize services on startup"""
+    logger.info("FastAPI server starting...")
+    # Server starts immediately, services initialize in background
+    asyncio.create_task(initialize_services_background())
+
+async def initialize_services_background():
+    """Initialize services in background without blocking startup"""
     global vector_store, embedding_service, retriever_service, llm_service, text_chunker
     
     try:
-        logger.info("Starting Mini RAG application...")
+        logger.info("Starting Mini RAG application services...")
         
         # Validate environment variables
         required_vars = [
@@ -92,13 +98,10 @@ async def startup_event():
         else:
             required_vars.append('OPENAI_API_KEY')
         
-        # For embeddings, OpenAI API key is optional (will fallback to local embeddings)
-        # but we still check if it's provided
-        
         missing_vars = [var for var in required_vars if not os.getenv(var)]
         if missing_vars:
             logger.error(f"Missing required environment variables: {missing_vars}")
-            # Don't raise exception, just log the error
+            return
         
         # Initialize services
         vector_store = VectorStore(
@@ -108,7 +111,7 @@ async def startup_event():
         )
         
         embedding_service = EmbeddingService(
-            api_key=os.getenv('OPENAI_API_KEY'),  # Can be None for local embeddings
+            api_key=os.getenv('OPENAI_API_KEY'),
             model=os.getenv('EMBEDDING_MODEL', 'text-embedding-ada-002')
         )
         
@@ -129,20 +132,18 @@ async def startup_event():
             chunk_overlap=int(os.getenv('CHUNK_OVERLAP', 200))
         )
         
-        # Initialize vector store index asynchronously (don't block startup)
+        # Initialize vector store index
         try:
             await vector_store.initialize_index()
             logger.info("Vector store initialized successfully")
         except Exception as e:
             logger.warning(f"Vector store initialization failed: {str(e)}")
-            # Continue startup even if vector store fails
         
-        logger.info("Mini RAG application started successfully!")
+        logger.info("Mini RAG application services started successfully!")
         
     except Exception as e:
-        logger.error(f"Failed to start application: {str(e)}")
+        logger.error(f"Failed to start application services: {str(e)}")
         # Don't raise exception to prevent blocking startup
-        logger.warning("Application started with limited functionality")
 
 # Serve static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
