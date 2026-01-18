@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini RAG - Document Q&A</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-brain"></i> Mini RAG</h1>
+                <p>Ask questions about your documents</p>
+                <div class="status-indicator">
+                    <span id="status-dot" class="status-dot"></span>
+                    <span id="status-text">Connecting...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <div class="upload-tabs">
+                    <button class="tab-button active" data-tab="file-upload">
+                        <i class="fas fa-upload"></i> Upload File
+                    </button>
+                    <button class="tab-button" data-tab="text-input">
+                        <i class="fas fa-edit"></i> Add Text
+                    </button>
+                </div>
+
+                <!-- File Upload Tab -->
+                <div id="file-upload" class="tab-content active">
+                    <div class="upload-area" id="upload-area">
+                        <div class="upload-content">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <p class="upload-text">Drag & drop files here or <span class="upload-link">browse</span></p>
+                            <p class="upload-info">Supports PDF, TXT, DOCX (max 10MB)</p>
+                            <input type="file" id="file-input" accept=".pdf,.txt,.docx" hidden>
+                        </div>
+                    </div>
+                    <div id="file-status" class="file-status"></div>
+                </div>
+
+                <!-- Text Input Tab -->
+                <div id="text-input" class="tab-content">
+                    <div class="text-input-form">
+                        <input type="text" id="text-title" placeholder="Enter title (optional)" class="title-input">
+                        <textarea id="text-content" placeholder="Paste or type your text content here..." rows="8"></textarea>
+                        <button id="add-text-btn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Text
+                        </button>
+                    </div>
+                    <div id="text-status" class="file-status"></div>
+                </div>
+            </section>
+
+            <!-- Query Section -->
+            <section class="query-section">
+                <div class="query-form">
+                    <div class="query-input-container">
+                        <input type="text" id="query-input" placeholder="Ask a question about your documents..." class="query-input">
+                        <button id="query-btn" class="btn btn-primary query-btn">
+                            <i class="fas fa-search"></i> Ask
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Answer Display -->
+                <div id="answer-section" class="answer-section" style="display: none;">
+                    <div class="answer-content">
+                        <h3><i class="fas fa-robot"></i> Answer</h3>
+                        <div id="answer-text" class="answer-text"></div>
+                        
+                        <div class="answer-metadata">
+                            <div class="metadata-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Response time: <span id="response-time">-</span>ms</span>
+                            </div>
+                            <div class="metadata-item">
+                                <i class="fas fa-database"></i>
+                                <span>Sources found: <span id="sources-count">-</span></span>
+                            </div>
+                            <div class="metadata-item">
+                                <i class="fas fa-coins"></i>
+                                <span>Tokens used: <span id="tokens-used">-</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Citations -->
+                    <div id="citations-section" class="citations-section" style="display: none;">
+                        <h4><i class="fas fa-quote-left"></i> Sources & Citations</h4>
+                        <div id="citations-list" class="citations-list"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Statistics Section -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-file-alt"></i>
+                        <div class="stat-content">
+                            <h3 id="total-docs">-</h3>
+                            <p>Documents</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-search"></i>
+                        <div class="stat-content">
+                            <h3 id="total-queries">0</h3>
+                            <p>Queries</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-server"></i>
+                        <div class="stat-content">
+                            <h3 id="index-size">-</h3>
+                            <p>Index Size</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2026 Mini RAG Application. Built with FastAPI, OpenAI, and Pinecone.</p>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p id="loading-text">Processing...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
