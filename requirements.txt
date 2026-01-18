@@ -1,22 +1,38 @@
+# Build dependencies
+setuptools>=65.0.0
+wheel>=0.38.0
+pip>=23.0.0
+
+# Web framework
 fastapi==0.104.1
 uvicorn==0.24.0
 python-multipart==0.0.6
 jinja2==3.1.2
 python-dotenv==1.0.0
-google-generativeai==0.8.6
-sentence-transformers==2.2.2
-numpy==1.24.3
-pandas==2.0.3
-pinecone-client==3.0.0
-cohere==4.37.0
-voyageai==0.1.7
-langchain==0.1.0
-langchain-community==0.0.10
-langchain-openai==0.0.2
-faiss-cpu==1.7.4
-tiktoken==0.5.1
-PyPDF2==3.0.1
-python-docx==0.8.11
-aiofiles==23.2.1
-httpx==0.25.2
-pydantic==2.5.0
+
+# AI/ML dependencies
+google-generativeai>=0.8.6
+sentence-transformers>=3.0.0
+numpy>=1.26.0
+pandas>=2.1.0
+pinecone-client>=3.0.0
+cohere>=4.37.0
+voyageai>=0.1.7
+
+# LangChain ecosystem
+langchain>=0.1.0
+langchain-community>=0.0.10
+langchain-openai>=0.0.2
+
+# Vector databases and search
+faiss-cpu>=1.7.4
+tiktoken>=0.5.1
+
+# Document processing
+PyPDF2>=3.0.1
+python-docx>=0.8.11
+
+# Async and HTTP
+aiofiles>=23.2.1
+httpx>=0.25.2
+pydantic>=2.5.0
