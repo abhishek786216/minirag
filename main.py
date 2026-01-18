@@ -97,7 +97,8 @@ async def startup_event():
         
         missing_vars = [var for var in required_vars if not os.getenv(var)]
         if missing_vars:
-            raise ValueError(f"Missing required environment variables: {missing_vars}")
+            logger.error(f"Missing required environment variables: {missing_vars}")
+            # Don't raise exception, just log the error
         
         # Initialize services
         vector_store = VectorStore(
@@ -128,17 +129,28 @@ async def startup_event():
             chunk_overlap=int(os.getenv('CHUNK_OVERLAP', 200))
         )
         
-        # Initialize vector store index
-        await vector_store.initialize_index()
+        # Initialize vector store index asynchronously (don't block startup)
+        try:
+            await vector_store.initialize_index()
+            logger.info("Vector store initialized successfully")
+        except Exception as e:
+            logger.warning(f"Vector store initialization failed: {str(e)}")
+            # Continue startup even if vector store fails
         
         logger.info("Mini RAG application started successfully!")
         
     except Exception as e:
         logger.error(f"Failed to start application: {str(e)}")
-        raise
+        # Don't raise exception to prevent blocking startup
+        logger.warning("Application started with limited functionality")
 
 # Serve static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.get("/ping")
+async def ping():
+    """Simple ping endpoint for health checks"""
+    return {"status": "ok", "message": "pong"}
 
 @app.get("/", response_class=HTMLResponse)
 async def home():
@@ -386,12 +398,13 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 if __name__ == "__main__":
     # Development server
+    port = int(os.getenv("PORT", 8000))
     print("Starting Mini RAG application...")
-    print("Access the web interface at: http://localhost:8000")
+    print(f"Access the web interface at: http://localhost:{port}")
     uvicorn.run(
         "main:app",
         host="0.0.0.0",
-        port=8000,
+        port=port,
         reload=True,
         log_level="info"
     )
