@@ -17,13 +17,13 @@
     }
   ],
   "env": {
-    "GEMINI_API_KEY": "@gemini_api_key",
+    "GEMINI_API_KEY": "AIzaSyAOCG6TJL4U_agnTnys_8gvHNhK_KLhi7I",
     "LLM_MODEL": "gemini-pro",
     "EMBEDDING_MODEL": "all-MiniLM-L6-v2",
-    "PINECONE_API_KEY": "@pinecone_api_key",
-    "PINECONE_ENVIRONMENT": "@pinecone_environment",
-    "PINECONE_INDEX_NAME": "@pinecone_index_name",
-    "COHERE_API_KEY": "@cohere_api_key",
+    "PINECONE_API_KEY": "pcsk_4Y1PRV_2VZMgxaL1cYCcCiF6Cdw86npjDseJL6RqAVD46UgLFwHWVDXqboJTnKhSrzcNjY",
+    "PINECONE_ENVIRONMENT": "gcp-starter",
+    "PINECONE_INDEX_NAME": "minirag-index",
+    "COHERE_API_KEY": "nOcV8gSHxvsEH1oOz4UTxsJfLjdcdg36LP23nqJt",
     "CHUNK_SIZE": "1000",
     "CHUNK_OVERLAP": "200",
     "TOP_K": "10",
