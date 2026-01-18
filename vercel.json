@@ -17,15 +17,21 @@
     }
   ],
   "env": {
-    "OPENAI_API_KEY": "@openai_api_key",
+    "GEMINI_API_KEY": "@gemini_api_key",
+    "LLM_MODEL": "gemini-pro",
+    "EMBEDDING_MODEL": "all-MiniLM-L6-v2",
     "PINECONE_API_KEY": "@pinecone_api_key",
     "PINECONE_ENVIRONMENT": "@pinecone_environment",
     "PINECONE_INDEX_NAME": "@pinecone_index_name",
-    "COHERE_API_KEY": "@cohere_api_key"
+    "COHERE_API_KEY": "@cohere_api_key",
+    "CHUNK_SIZE": "1000",
+    "CHUNK_OVERLAP": "200",
+    "TOP_K": "10",
+    "RERANK_TOP_K": "5"
   },
   "functions": {
     "main.py": {
-      "maxDuration": 30
+      "maxDuration": 60
     }
   }
 }
