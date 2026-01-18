@@ -28,10 +28,5 @@
     "CHUNK_OVERLAP": "200",
     "TOP_K": "10",
     "RERANK_TOP_K": "5"
-  },
-  "functions": {
-    "main.py": {
-      "maxDuration": 60
-    }
   }
 }
